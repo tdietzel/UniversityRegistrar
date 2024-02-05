@@ -34,5 +34,14 @@ namespace UniversityRegistrar.Controllers
       List<Student> model = _db.Students.ToList();
       return View("Index", model);
     }
+
+    public ActionResult Details(int id)
+    {
+      Student selectedStudent = _db.Students
+                                    .Include(s => s.JoinEntities)
+                                    .ThenInclude(join => join.Course)
+                                    .FirstOrDefault(s => s.StudentId == id);
+      return View(selectedStudent);
+    }
   }
 }

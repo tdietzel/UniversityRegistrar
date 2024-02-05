@@ -1,0 +1,12 @@
+@model UniversityRegistrar.Models.Course
+
+<h1>Add a course</h1>
+
+@using (Html.BeginForm())
+{
+  <p>@Html.LabelFor(model => model.CourseName): @Html.TextBoxFor(model => model.CourseName, new { @required = "required"})</p>
+  <p>@Html.LabelFor(model => model.CourseNumber): @Html.TextBoxFor(model => model.CourseNumber, new { @type = "number", @min = 1})</p>
+  <input type="submit" value="Submit" />
+  <br />
+  @Html.ActionLink("Go back", "Index", "Courses")
+}

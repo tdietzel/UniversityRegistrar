@@ -1,0 +1,27 @@
+@model UniversityRegistrar.Models.Student
+@using UniversityRegistrar.Models;
+
+<h1>Student Details</h1>
+<p>@Html.DisplayNameFor(model => model.StudentName): @Html.DisplayFor(student => student.StudentName)</p>
+<p>@Html.DisplayNameFor(model => model.EnrollmentDate): @Html.DisplayFor(student => student.EnrollmentDate)</p>
+
+
+@if(Model.JoinEntities.Count == 0)
+{
+  <p>This student is not enrolled in any courses.</p>
+}
+else
+{
+  <ul>
+  @foreach(StudentCourse join in Model.JoinEntities)
+  {
+    <li>@join.Student.StudentName</li>
+    <li>@join.Course.CourseName</li>
+  }
+  </ul>
+}
+
+
+@* @Html.ActionLink("Enroll Student", "AddStudent", new {id = Model.CourseId}) *@
+<br />
+@Html.ActionLink("Go back", "Index")
