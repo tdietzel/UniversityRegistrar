@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UniversityRegistrar.Models;
 
@@ -10,9 +11,10 @@ using UniversityRegistrar.Models;
 namespace UniversityRegistrar.Migrations
 {
     [DbContext(typeof(UniversityRegistrarContext))]
-    partial class UniversityRegistrarContextModelSnapshot : ModelSnapshot
+    [Migration("20240205193610_AddDepartmentEntity")]
+    partial class AddDepartmentEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,27 +90,6 @@ namespace UniversityRegistrar.Migrations
                     b.ToTable("StudentCourses");
                 });
 
-            modelBuilder.Entity("UniversityRegistrar.Models.StudentDepartment", b =>
-                {
-                    b.Property<int>("StudentDepartmentId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<int>("DepartmentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("StudentDepartmentId");
-
-                    b.HasIndex("DepartmentId");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("StudentDepartments");
-                });
-
             modelBuilder.Entity("UniversityRegistrar.Models.StudentCourse", b =>
                 {
                     b.HasOne("UniversityRegistrar.Models.Course", "Course")
@@ -124,25 +105,6 @@ namespace UniversityRegistrar.Migrations
                         .IsRequired();
 
                     b.Navigation("Course");
-
-                    b.Navigation("Student");
-                });
-
-            modelBuilder.Entity("UniversityRegistrar.Models.StudentDepartment", b =>
-                {
-                    b.HasOne("UniversityRegistrar.Models.Department", "Department")
-                        .WithMany()
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("UniversityRegistrar.Models.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Department");
 
                     b.Navigation("Student");
                 });
