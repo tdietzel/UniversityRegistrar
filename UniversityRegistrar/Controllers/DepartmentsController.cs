@@ -29,5 +29,55 @@ namespace UniversityRegistrar.Controllers
 
       return RedirectToAction("Index");
     }
+
+    public ActionResult AddStudent(int id)
+    {
+      Department selectedDepartment = _db.Departments.FirstOrDefault(d => d.DepartmentId == id);
+      ViewBag.StudentId = new SelectList(_db.Students, "StudentId", "StudentName");
+      return View(selectedDepartment);
+    }
+
+    [HttpPost]
+    public ActionResult AddStudent(Department department, int studentId)
+    {
+      #nullable enable
+      StudentDepartment? joinEntity = _db.StudentDepartments.FirstOrDefault(join => (join.StudentId == studentId && join.DepartmentId == department.DepartmentId));
+      #nullable disable
+      if (joinEntity == null && studentId != 0)
+      {
+        _db.StudentDepartments.Add(new StudentDepartment() {StudentId = studentId, DepartmentId = department.DepartmentId});
+        _db.SaveChanges();
+      }
+      return RedirectToAction("Details", new { id = department.DepartmentId});
+    }
+
+    public ActionResult AddCourse(int id)
+    {
+      Department selectedDepartment = _db.Departments.FirstOrDefault(d => d.DepartmentId == id);
+      ViewBag.CourseId = new SelectList(_db.Courses, "CourseId", "CourseName");
+      return View(selectedDepartment);
+    }
+    [HttpPost]
+    public ActionResult AddCourse(Department department, int courseId)
+    {
+      #nullable enable
+      CourseDepartment? joinEntity = _db.CourseDepartments.FirstOrDefault(join => (join.CourseId == courseId && join.DepartmentId == department.DepartmentId));
+      #nullable disable
+      if (joinEntity == null && courseId != 0)
+      {
+        _db.CourseDepartments.Add(new CourseDepartment() {CourseId = courseId, DepartmentId = department.DepartmentId});
+        _db.SaveChanges();
+      }
+      return RedirectToAction("Details", new { id = department.DepartmentId });
+    }
+
+    public ActionResult Details(int id)
+    {
+      Department thisDepartment = _db.Departments.Include(department => department.JoinEntities)
+      .ThenInclude(join => join.Student)
+      .FirstOrDefault(department => department.DepartmentId == id);
+      return View(thisDepartment);
+
+    }
   }
 }

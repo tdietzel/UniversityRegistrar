@@ -6,5 +6,7 @@ namespace UniversityRegistrar.Models
   {
     public int DepartmentId { get; set; }
     public string DepartmentName { get; set; }
+
+    public List<StudentDepartment> JoinEntities { get; }
   }
 }

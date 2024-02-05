@@ -1,0 +1,12 @@
+@model UniversityRegistrar.Models.Department
+
+@using (Html.BeginForm())
+{
+  @Html.HiddenFor(model => model.DepartmentId)
+  @Html.Label("Add a student to this department")
+  @Html.DropDownList("StudentId")
+
+  <input type="submit" value="Add Student" />
+
+  @Html.ActionLink("Go back", "Details", new { id = Model.DepartmentId})
+}
