@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+
 
 namespace UniversityRegistrar.Controllers
 {
@@ -23,14 +25,30 @@ namespace UniversityRegistrar.Controllers
 
     public ActionResult Create()
     {
+      ViewBag.DepartmentId = new SelectList(_db.Departments, "DepartmentId", "DepartmentName");
       return View();
     }
 
     [HttpPost]
-    public ActionResult Create(Course course)
+    public ActionResult Create(Course course, int departmentId)
     {
       _db.Courses.Add(course);
       _db.SaveChanges();
+      
+      if (departmentId != null)
+      {
+        Department selectedDepartment = _db.Departments.FirstOrDefault(d => d.DepartmentId == departmentId);
+
+        #nullable enable
+        CourseDepartment? joinEntity = _db.CourseDepartments.FirstOrDefault(join => (join.CourseId == course.CourseId && join.DepartmentId == selectedDepartment.DepartmentId));
+        #nullable disable
+        if (joinEntity == null && course.CourseId != 0)
+        {
+          _db.CourseDepartments.Add(new CourseDepartment() {CourseId = course.CourseId, DepartmentId = departmentId});
+          _db.SaveChanges();
+        }
+      }
+    
       return RedirectToAction("Index");
     }
 

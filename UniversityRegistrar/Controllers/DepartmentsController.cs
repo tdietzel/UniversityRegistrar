@@ -77,7 +77,6 @@ namespace UniversityRegistrar.Controllers
       .ThenInclude(join => join.Student)
       .FirstOrDefault(department => department.DepartmentId == id);
       return View(thisDepartment);
-
     }
   }
 }

@@ -30,6 +30,10 @@ else
 
 <h1>Department Details</h1>
 <p>@Html.DisplayNameFor(model => model.DepartmentName)</p>
+
+@Html.ActionLink("Add Course", "AddCourse", new { id = Model.DepartmentId})
+@Html.ActionLink("Add Student", "AddStudent", new { id = Model.DepartmentId})
+
 @* 
 @if(Model.JoinEntities.Count == 0)
 {
