@@ -4,8 +4,10 @@ namespace UniversityRegistrar.Models
 {
   public class UniversityRegistrarContext : DbContext
   {
-    public DbSet<Category> Categories { get; set; }
-    public DbSet<Item> Items { get; set; }
+    public DbSet<Student> Students { get; set; }
+    public DbSet<Course> Courses { get; set; }
+
+    
 
     public UniversityRegistrarContext(DbContextOptions options) : base(options) { }
   }
