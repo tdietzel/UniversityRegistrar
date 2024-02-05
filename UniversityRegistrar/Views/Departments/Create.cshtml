@@ -1,0 +1,10 @@
+@model UniversityRegistrar.Models.Department
+
+<h1>Add a department</h1>
+
+@using (Html.BeginForm())
+{
+  <p>@Html.LabelFor(model => model.DepartmentName): @Html.TextBoxFor(model => model.DepartmentName)</p>
+  <input type="submit" value="Submit" />
+  @Html.ActionLink("Go back", "Index")
+}
