@@ -1,0 +1,12 @@
+@model UniversityRegistrar.Models.Student
+
+<h1>Add a student</h1>
+
+@using ( Html.BeginForm())
+{
+  <p>@Html.LabelFor(model => model.StudentName): @Html.TextBoxFor(model => model.StudentName)</p>
+  <p>@Html.LabelFor(model => model.EnrollmentDate): <input type="date" id="EnrollmentDate" name="EnrollmentDate" value="2024-02-01" min="2024-02-01" max="2025-01-01" /></p>
+  <input type="submit" value="Submit" />
+  <br />
+  @Html.ActionLink("Go back", "Index", "Students")
+}

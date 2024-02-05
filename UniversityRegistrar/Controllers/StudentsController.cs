@@ -25,5 +25,14 @@ namespace UniversityRegistrar.Controllers
     {
       return View();
     }
+    [HttpPost]
+    public ActionResult Create(Student student)
+    {
+      _db.Students.Add(student);
+      _db.SaveChanges();
+
+      List<Student> model = _db.Students.ToList();
+      return View("Index", model);
+    }
   }
 }
