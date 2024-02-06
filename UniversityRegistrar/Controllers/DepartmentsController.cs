@@ -76,9 +76,23 @@ namespace UniversityRegistrar.Controllers
       Department thisDepartment = _db.Departments
         .Include(department => department.JoinEntities)
         .ThenInclude(join => join.Student)
+      //   .Include(department => department.CourseDepartmentRelations)
+      //   .ThenInclude(join => join.Course)
+      // .FirstOrDefault(department => department.DepartmentId == id);
+
         .Include(department => department.CourseDepartmentRelations)
-        .ThenInclude(join => join.Course)
-      .FirstOrDefault(department => department.DepartmentId == id);
+        .ThenInclude(courseDept => courseDept.Course)
+        .ThenInclude(course => course.JoinEntities)
+        .ThenInclude(studentCourse => studentCourse.Student)
+        .FirstOrDefault(department => department.DepartmentId == id);
+
+      // List<StudentCourse> "ListA" where Course.DepartmentId == id of this current department
+
+      // foreach item in ListA, check to see which courses are not completed, then push to "ListB" List<StudentCourse>
+
+      // ViewBag.UncompletedCourses = ListB
+
+
       return View(thisDepartment);
     }
   }

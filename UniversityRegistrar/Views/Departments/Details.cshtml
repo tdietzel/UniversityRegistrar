@@ -1,71 +1,73 @@
-@* @model UniversityRegistrar.Models.Course
-@using UniversityRegistrar.Models;
-
-<h1>Course Details</h1>
-<p>@Html.DisplayNameFor(model => model.CourseName): @Html.DisplayFor(course => course.CourseName)</p>
-<p>@Html.DisplayNameFor(model => model.CourseNumber): @Html.DisplayFor(course => course.CourseNumber)</p>
-
-
-@if(Model.JoinEntities.Count == 0)
-{
-  <p>This course does not have any students enrolled.</p>
-}
-else
-{
-  <ul>
-  @foreach(StudentCourse join in Model.JoinEntities)
-  {
-    <li>@join.Student.StudentName</li>
-  }
-  </ul>
-}
-
-
-@Html.ActionLink("Enroll Student", "AddStudent", new {id = Model.CourseId})
-<br />
-@Html.ActionLink("Go back", "Index") *@
-
 @model UniversityRegistrar.Models.Department
 @using UniversityRegistrar.Models;
+@using System.Collections.Generic;
 
 <h1>Department Details</h1>
 <p><strong>@Html.DisplayNameFor(model => model.DepartmentName): </strong> @Html.DisplayFor(model => model.DepartmentName)</p>
 
-@Html.ActionLink("Add Course", "AddCourse", new { id = Model.DepartmentId})
-@Html.ActionLink("Add Student", "AddStudent", new { id = Model.DepartmentId})
+@Html.ActionLink("Add Course", "AddCourse", new { id = Model.DepartmentId })
+@Html.ActionLink("Add Student", "AddStudent", new { id = Model.DepartmentId })
 
 <p><strong>Students:</strong></p>
-@if(Model.JoinEntities.Count == 0)
+@if (Model.JoinEntities.Count == 0)
 {
   <p>This department does not have any students enrolled.</p>
 }
 else
 {
   <ul>
-  @foreach(StudentDepartment join in Model.JoinEntities)
-  {
-    <li>@join.Student.StudentName</li>
-  }
+    @foreach (StudentDepartment join in Model.JoinEntities)
+    {
+      <li>Student Name: @Html.ActionLink($"{join.Student.StudentName}", "Details", "Students", new { id = join.StudentId })</li>
+    }
   </ul>
 }
+
 
 
 <p><strong>Courses: </strong>
-@if(Model.CourseDepartmentRelations.Count == 0)
-{
-  <span>This department does not have any associated courses.</span>
-}
-else
-{
-  <ul>
-  @foreach(CourseDepartment join in Model.CourseDepartmentRelations)
+  @if (Model.CourseDepartmentRelations.Count == 0)
   {
-    <li>@join.Course.CourseName</li>
+    <span>This department does not have any associated courses.</span>
   }
+  else
+  {
+  <ul>
+      @foreach (CourseDepartment join in Model.CourseDepartmentRelations)
+      {
+      <li>Name: @Html.ActionLink($"{join.Course.CourseName}", "Details", "Courses", new { id = join.Course.CourseId })</li>
+      }
   </ul>
-}
+  }
 </p>
 
+<p><strong>Students still in course: </strong>
+  @if (Model.CourseDepartmentRelations.Count == 0)
+  {
+    <span>This department does not have any associated courses.</span>
+  }
+  else
+  {
+  <ul>
+      @foreach (CourseDepartment courseDept in Model.CourseDepartmentRelations)
+      {
+        @foreach (StudentCourse studentCourse in courseDept.Course.JoinEntities)
+        {
+          @if (!studentCourse.CourseCompleted)
+          {
+          <li>Course Name: @Html.ActionLink($"{courseDept.Course.CourseName}", "Details", "Courses", new { id = courseDept.Course.CourseId })<br />
+            <ul>
+              <span>
+                <li>Student Name: @Html.ActionLink($"{studentCourse.Student.StudentName}", "Details", "Students", new { id = studentCourse.StudentId })</li>
+              </span>
+            </ul>
+          </li>
+          }
+        }
+      }
+  </ul>
+  }
+</p>
 
 <br />
 @Html.ActionLink("Go back", "Index")
