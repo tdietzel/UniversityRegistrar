@@ -7,14 +7,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace UniversityRegistrar.Controllers
 {
-  public class DepartmentsController: Controller
+  public class DepartmentsController : Controller
   {
     private readonly UniversityRegistrarContext _db;
     public DepartmentsController(UniversityRegistrarContext db)
     {
       _db = db;
     }
-    
+
     public ActionResult Index()
     {
       return View(_db.Departments.ToList());
@@ -40,15 +40,15 @@ namespace UniversityRegistrar.Controllers
     [HttpPost]
     public ActionResult AddStudent(Department department, int studentId)
     {
-      #nullable enable
+    #nullable enable
       StudentDepartment? joinEntity = _db.StudentDepartments.FirstOrDefault(join => (join.StudentId == studentId && join.DepartmentId == department.DepartmentId));
-      #nullable disable
+    #nullable disable
       if (joinEntity == null && studentId != 0)
       {
-        _db.StudentDepartments.Add(new StudentDepartment() {StudentId = studentId, DepartmentId = department.DepartmentId});
+        _db.StudentDepartments.Add(new StudentDepartment() { StudentId = studentId, DepartmentId = department.DepartmentId });
         _db.SaveChanges();
       }
-      return RedirectToAction("Details", new { id = department.DepartmentId});
+      return RedirectToAction("Details", new { id = department.DepartmentId });
     }
 
     public ActionResult AddCourse(int id)
@@ -60,12 +60,12 @@ namespace UniversityRegistrar.Controllers
     [HttpPost]
     public ActionResult AddCourse(Department department, int courseId)
     {
-      #nullable enable
+    #nullable enable
       CourseDepartment? joinEntity = _db.CourseDepartments.FirstOrDefault(join => (join.CourseId == courseId && join.DepartmentId == department.DepartmentId));
-      #nullable disable
+    #nullable disable
       if (joinEntity == null && courseId != 0)
       {
-        _db.CourseDepartments.Add(new CourseDepartment() {CourseId = courseId, DepartmentId = department.DepartmentId});
+        _db.CourseDepartments.Add(new CourseDepartment() { CourseId = courseId, DepartmentId = department.DepartmentId });
         _db.SaveChanges();
       }
       return RedirectToAction("Details", new { id = department.DepartmentId });
@@ -79,20 +79,11 @@ namespace UniversityRegistrar.Controllers
       //   .Include(department => department.CourseDepartmentRelations)
       //   .ThenInclude(join => join.Course)
       // .FirstOrDefault(department => department.DepartmentId == id);
-
         .Include(department => department.CourseDepartmentRelations)
         .ThenInclude(courseDept => courseDept.Course)
         .ThenInclude(course => course.JoinEntities)
         .ThenInclude(studentCourse => studentCourse.Student)
         .FirstOrDefault(department => department.DepartmentId == id);
-
-      // List<StudentCourse> "ListA" where Course.DepartmentId == id of this current department
-
-      // foreach item in ListA, check to see which courses are not completed, then push to "ListB" List<StudentCourse>
-
-      // ViewBag.UncompletedCourses = ListB
-
-
       return View(thisDepartment);
     }
   }
