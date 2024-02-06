@@ -1,0 +1,17 @@
+@model UniversityRegistrar.Models.Student
+
+<h1>Edit</h1>
+
+@using (Html.BeginForm())
+{
+  @Html.HiddenFor(model => model.StudentId)
+  @Html.HiddenFor(model => model.EnrollmentDate)
+  @Html.HiddenFor(model => model.JoinEntities)
+  @* @Html.HiddenFor(model => model.MoreJoinEntities) *@
+  @Html.LabelFor(model => model.StudentName)
+  @Html.TextBoxFor(model => model.StudentName)
+  <p>Department: @Html.DropDownList("DepartmentId")</p><br />
+  
+
+  <input type="submit" value="Submit" />
+}

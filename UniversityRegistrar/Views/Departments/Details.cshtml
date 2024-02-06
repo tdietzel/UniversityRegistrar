@@ -29,7 +29,7 @@ else
 @using UniversityRegistrar.Models;
 
 <h1>Department Details</h1>
-<p>@Html.DisplayNameFor(model => model.DepartmentName)</p>
+<p><strong>@Html.DisplayNameFor(model => model.DepartmentName):</strong> @Html.DisplayFor(model => model.DepartmentName)</p>
 
 @Html.ActionLink("Add Course", "AddCourse", new { id = Model.DepartmentId})
 @Html.ActionLink("Add Student", "AddStudent", new { id = Model.DepartmentId})

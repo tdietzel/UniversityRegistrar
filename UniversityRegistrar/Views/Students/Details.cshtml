@@ -17,9 +17,23 @@ else
   {
     <li>@join.Student.StudentName</li>
     <li>@join.Course.CourseName</li>
+    
   }
   </ul>
 }
 
+<p><strong>Department: </strong>
+  @if (Model.MoreJoinEntities.Count == 0)
+{
+  <span>This student has not yet declared a major.</span>
+}
+else
+{
+  <span>@Model.MoreJoinEntities[0].Department.DepartmentName</span>
+}
+</p>
+
+
 <br />
+@Html.ActionLink("Edit", "Edit", new {id = @Model.StudentId})
 @Html.ActionLink("Go back", "Index")
