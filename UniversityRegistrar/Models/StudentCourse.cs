@@ -9,6 +9,18 @@ namespace UniversityRegistrar.Models
     public int StudentCourseId { get; set; }
     public int CourseId { get; set; }
     public Course Course { get; set; }
+    public bool CourseCompleted { get; set; } = false;
 
+    public void ChangeCourseStatus()
+    {
+      if(!CourseCompleted)
+      {
+        CourseCompleted = true;
+      }
+      else
+      {
+        CourseCompleted = false;
+      }
+    }
   }
 }

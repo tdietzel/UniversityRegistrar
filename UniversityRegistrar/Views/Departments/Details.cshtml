@@ -29,15 +29,15 @@ else
 @using UniversityRegistrar.Models;
 
 <h1>Department Details</h1>
-<p><strong>@Html.DisplayNameFor(model => model.DepartmentName):</strong> @Html.DisplayFor(model => model.DepartmentName)</p>
+<p><strong>@Html.DisplayNameFor(model => model.DepartmentName): </strong> @Html.DisplayFor(model => model.DepartmentName)</p>
 
 @Html.ActionLink("Add Course", "AddCourse", new { id = Model.DepartmentId})
 @Html.ActionLink("Add Student", "AddStudent", new { id = Model.DepartmentId})
 
-@* 
+<p><strong>Students:</strong></p>
 @if(Model.JoinEntities.Count == 0)
 {
-  <p>This course does not have any students enrolled.</p>
+  <p>This department does not have any students enrolled.</p>
 }
 else
 {
@@ -47,7 +47,24 @@ else
     <li>@join.Student.StudentName</li>
   }
   </ul>
-} *@
+}
+
+
+<p><strong>Courses: </strong>
+@if(Model.CourseDepartmentRelations.Count == 0)
+{
+  <span>This department does not have any associated courses.</span>
+}
+else
+{
+  <ul>
+  @foreach(CourseDepartment join in Model.CourseDepartmentRelations)
+  {
+    <li>@join.Course.CourseName</li>
+  }
+  </ul>
+}
+</p>
 
 
 <br />

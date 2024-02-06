@@ -36,6 +36,39 @@ namespace UniversityRegistrar.Controllers
       return View("Index", model);
     }
 
+
+    public SelectList DepartmentSelectList(int? id = null)
+    {
+      SelectList departmentList = new(_db.Departments, "DepartmentId", "DepartmentName");
+      if (id != null)
+      {
+        foreach (SelectListItem dept in departmentList)
+        {
+          if (dept.Value == id.ToString())
+          {
+            dept.Selected = true;
+          }
+        }
+      }
+      return departmentList;
+    }
+
+    public SelectList StudentCourseCompletionStatusSelectList(bool? status = false)
+    {
+      SelectList courseStatus = new(_db.StudentCourses, "CourseCompleted", "CourseCompleted");
+      if (status != false)
+      {
+        foreach (SelectListItem course in courseStatus)
+        {
+          if (course.Value == status.ToString())
+          {
+            course.Selected = true;
+          }
+        }
+      }
+      return courseStatus;
+    }
+
     public ActionResult Details(int id)
     {
       Student selectedStudent = _db.Students
@@ -56,7 +89,9 @@ namespace UniversityRegistrar.Controllers
                                     .ThenInclude(join => join.Department)
                                     .FirstOrDefault(s => s.StudentId == id);
       ViewBag.CourseId = new SelectList(_db.Courses, "CourseId", "CourseName");
-      ViewBag.DepartmentId = new SelectList(_db.Departments, "DepartmentId", "DepartmentName");
+      // ViewBag.DepartmentId = new SelectList(_db.Departments, "DepartmentId", "DepartmentName");
+      ViewBag.DepartmentId = DepartmentSelectList(selectedStudent.MoreJoinEntities[0].Department.DepartmentId);
+      // ViewBag.CourseCompleted = StudentCourseCompletionStatusSelectList(selectedStudent.JoinEntities[id].CourseCompleted);
       return View(selectedStudent);
     }
 
@@ -66,6 +101,7 @@ namespace UniversityRegistrar.Controllers
       _db.Students.Update(student);
       _db.SaveChanges();
 
+      
       Department selectedDepartment = _db.Departments.FirstOrDefault(d => d.DepartmentId == departmentId);
 
       #nullable enable
@@ -81,10 +117,21 @@ namespace UniversityRegistrar.Controllers
       {
         Console.WriteLine("Entity good");
         _db.StudentDepartments.Remove(joinEntity);
+        _db.SaveChanges();
         _db.StudentDepartments.Add(new StudentDepartment() {StudentId = student.StudentId, DepartmentId = departmentId});
+        _db.SaveChanges();
       }
 
       return RedirectToAction("Details", new {id = student.StudentId});
+    }
+
+    [HttpPost, ActionName("Details")]
+    public ActionResult ChangeCompletionStatus (StudentCourse studentCourse)
+    {
+      studentCourse.ChangeCourseStatus();
+      _db.StudentCourses.Update(studentCourse);
+      _db.SaveChanges();
+      return RedirectToAction("Index");
     }
   }
 }

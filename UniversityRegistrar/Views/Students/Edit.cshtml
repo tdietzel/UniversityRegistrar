@@ -1,4 +1,5 @@
 @model UniversityRegistrar.Models.Student
+@using UniversityRegistrar.Models;
 
 <h1>Edit</h1>
 
@@ -12,6 +13,7 @@
   @Html.TextBoxFor(model => model.StudentName)
   <p>Department: @Html.DropDownList("DepartmentId")</p><br />
   
-
   <input type="submit" value="Submit" />
 }
+
+@Html.ActionLink("Back", "Details", new {id = @Model.StudentId})

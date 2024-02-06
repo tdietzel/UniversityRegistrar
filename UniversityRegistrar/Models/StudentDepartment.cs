@@ -9,6 +9,6 @@ namespace UniversityRegistrar.Models
     public int StudentDepartmentId { get; set; }
     public int DepartmentId { get; set; }
     public Department Department { get; set; }
-
+    
   }
 }

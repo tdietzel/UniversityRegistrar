@@ -35,7 +35,7 @@ namespace UniversityRegistrar.Controllers
       _db.Courses.Add(course);
       _db.SaveChanges();
       
-      if (departmentId != null)
+      if (departmentId >= 1)
       {
         Department selectedDepartment = _db.Departments.FirstOrDefault(d => d.DepartmentId == departmentId);
 

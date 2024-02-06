@@ -8,5 +8,6 @@ namespace UniversityRegistrar.Models
     public string DepartmentName { get; set; }
 
     public List<StudentDepartment> JoinEntities { get; }
+    public List<CourseDepartment> CourseDepartmentRelations { get; }
   }
 }

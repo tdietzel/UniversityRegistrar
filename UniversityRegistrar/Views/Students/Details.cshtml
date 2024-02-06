@@ -12,15 +12,24 @@
 }
 else
 {
+  <p><strong>Course Completion Status: </strong>
   <ul>
   @foreach(StudentCourse join in Model.JoinEntities)
   {
-    <li>@join.Student.StudentName</li>
-    <li>@join.Course.CourseName</li>
+    <li>
+      Course Name: @join.Course.CourseName <br />
+      Course Completion: @join.CourseCompleted
+      @using (Html.BeginForm("Details", "Students", FormMethod.Post, new {studentCourse = @join}))
+      {
+        <input type="submit" value="Click to change completion status" />
+      }
+    </li>
     
   }
   </ul>
+  </p>
 }
+
 
 <p><strong>Department: </strong>
   @if (Model.MoreJoinEntities.Count == 0)
@@ -32,7 +41,6 @@ else
   <span>@Model.MoreJoinEntities[0].Department.DepartmentName</span>
 }
 </p>
-
 
 <br />
 @Html.ActionLink("Edit", "Edit", new {id = @Model.StudentId})
