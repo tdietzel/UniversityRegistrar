@@ -109,13 +109,11 @@ namespace UniversityRegistrar.Controllers
       #nullable disable
       if (joinEntity == null && student.StudentId != 0)
       {
-        Console.WriteLine("Entity null");
         _db.StudentDepartments.Add(new StudentDepartment() {StudentId = student.StudentId, DepartmentId = departmentId});
         _db.SaveChanges();
       } 
       else
       {
-        Console.WriteLine("Entity good");
         _db.StudentDepartments.Remove(joinEntity);
         _db.SaveChanges();
         _db.StudentDepartments.Add(new StudentDepartment() {StudentId = student.StudentId, DepartmentId = departmentId});
@@ -126,12 +124,13 @@ namespace UniversityRegistrar.Controllers
     }
 
     [HttpPost, ActionName("Details")]
-    public ActionResult ChangeCompletionStatus (StudentCourse studentCourse)
+    public ActionResult ChangeCompletionStatus (int studentCourseId)
     {
+      StudentCourse studentCourse = _db.StudentCourses.FirstOrDefault(entry => entry.StudentCourseId == studentCourseId);
       studentCourse.ChangeCourseStatus();
       _db.StudentCourses.Update(studentCourse);
       _db.SaveChanges();
-      return RedirectToAction("Index");
+      return RedirectToAction("Details", new {id = studentCourse.StudentId});
     }
   }
 }

@@ -19,8 +19,9 @@ else
     <li>
       Course Name: @join.Course.CourseName <br />
       Course Completion: @join.CourseCompleted
-      @using (Html.BeginForm("Details", "Students", FormMethod.Post, new {studentCourse = @join}))
+      @using (Html.BeginForm("Details", "Students", FormMethod.Post))
       {
+        @Html.Hidden("studentCourseId", join.StudentCourseId)
         <input type="submit" value="Click to change completion status" />
       }
     </li>
